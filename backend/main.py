@@ -20,7 +20,7 @@ REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
 # --- FastAPI App Initialization ---
 app = FastAPI()
 
-origins = ["http://localhost:3000"]
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
