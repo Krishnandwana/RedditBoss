@@ -25,12 +25,27 @@ function App() {
         body: JSON.stringify({ text: content }),
       });
 
+      const responseBody = await response.text();
+
       if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.detail || `HTTP error! status: ${response.status}`);
+        // Try to parse as JSON, but fall back to raw text
+        let errorMessage;
+        try {
+          const errData = JSON.parse(responseBody);
+          errorMessage = errData.detail || JSON.stringify(errData);
+        } catch (e) {
+          errorMessage = responseBody || `HTTP error! status: ${response.status}`;
+        }
+        throw new Error(errorMessage);
       }
 
-      const data = await response.json();
+      // Check for empty response body even on success
+      if (!responseBody) {
+          setOpportunities([]); // Handle empty but successful response
+          return;
+      }
+
+      const data = JSON.parse(responseBody); // We already have the text
       setOpportunities(data);
 
     } catch (e) {
