@@ -17,7 +17,7 @@ function App() {
     setOpportunities([]);
 
     try {
-      const response = await fetch('/api/analyze-content', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/analyze-content`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
